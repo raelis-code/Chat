@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-  "start": "node server.js"
-},
+    "start": "node server.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@azure/identity": "^4.10.1",
+    "@azure/keyvault-secrets": "^4.10.0",
     "express": "^5.2.1",
     "socket.io": "^4.8.3"
   }
