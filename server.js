@@ -1,4 +1,8 @@
+const appInsights = require("applicationinsights");
 
+appInsights.setup().start();
+
+const clientInsights = appInsights.defaultClient;
 
 const express = require('express');
 const app = express();
@@ -27,12 +31,20 @@ app.get('/', (req, res) => {
 io.on('connection', socket => {
     console.log('Utilisateur connecté');
 
+    clientInsights.trackEvent({ name: "User connected" });
+
     socket.on('chat message', msg => {
         io.emit('chat message', msg);
     });
 
     socket.on('disconnect', () => {
+        clientInsights.trackEvent({ name: "User disconnected" });
         console.log('Utilisateur déconnecté');
+        clientInsights.trackEvent({
+  name: "Message received",
+  properties: { message: msg }
+
+});
     });
 });
 
@@ -49,6 +61,8 @@ let SECRET_KEY;
         SECRET_KEY = "local-secret"; 
     }
 })();
+
+clientInsights.trackEvent({ name: "Server started" });
 
 http.listen(PORT, () => {
   console.log(`Serveur lancé sur le port ${PORT}`);
